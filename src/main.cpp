@@ -2,6 +2,8 @@
 // https://towardsdatascience.com/perceptrons-logical-functions-and-the-xor-problem-37ca5025790a
 // https://stats.stackexchange.com/questions/410952/why-perceptron-is-linear-classifier
 // https://stats.stackexchange.com/questions/263768/can-a-perceptron-with-sigmoid-activation-function-perform-nonlinear-classificati
+// 10.4: Neural Networks: Multilayer Perceptron Part 1 - The Nature of Code
+//   https://youtu.be/u5GAVdLQyIg
 
 #include "perceptron.hpp"
 #include "training.hpp"
