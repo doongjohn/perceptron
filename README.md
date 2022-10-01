@@ -1,4 +1,4 @@
-# Neural networks from scratch
+# Perceptron xor
 
 ## build
 
