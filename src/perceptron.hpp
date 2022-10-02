@@ -5,61 +5,65 @@
 #include "utils.hpp"
 
 // forward declaration
-struct Perceptron;
-static auto train(Perceptron &p, std::vector<float> inputs, int target) -> void;
-static auto predict(Perceptron p, std::vector<float> inputs) -> int;
 static auto step(float sum) -> int;
 
 struct Perceptron {
   std::vector<float> weights;
   float bias;
-  float learning_rate = 0.1f;
+  float learning_rate;
 
-  Perceptron(int input_size) {
-    // initialize the weights and bias randomly
-    new (&weights) std::vector<float>(input_size);
-    for (auto &w : weights) {
-      w = random_float(-0.5f, 0.5f);
-    }
-    bias = random_float(-0.5f, 0.5f);
-  }
+  Perceptron(int input_size);
+
+  auto train(std::vector<float> inputs, int target) -> void;
+  auto predict(std::vector<float> inputs) -> int;
 
   template<typename... T>
-  auto operator()(T... inputs) -> int {
-    auto args = std::initializer_list{inputs...};
-    std::vector<float> inputs_f;
-    std::copy(args.begin(), args.end(), back_inserter(inputs_f));
-    return predict(*this, inputs_f);
-  }
+  auto operator()(T... inputs) -> int;
 };
 
-// supervised learning
-static auto train(Perceptron &p, std::vector<float> inputs, int target) -> void {
-  int error = target - predict(p, inputs);
+Perceptron::Perceptron(int input_size) {
+  // initialize the weights and bias randomly
+  new (&weights) std::vector<float>(input_size);
+  for (auto &w : weights) {
+    w = random_float(-0.5f, 0.5f);
+  }
+  bias = random_float(-0.5f, 0.5f);
+}
 
+auto Perceptron::train(std::vector<float> inputs, int target) -> void {
+  // supervised learning
+  int error = target - predict(inputs);
   if (error != 0) {
     // tune weights and bias
     for (int i = 0; i < inputs.size(); ++i) {
-      p.weights[i] += error * inputs[i] * p.learning_rate;
+      weights[i] += error * inputs[i] * learning_rate;
     }
-    p.bias += error * p.learning_rate;
+    bias += error * learning_rate;
   }
 }
 
-static auto predict(Perceptron p, std::vector<float> inputs) -> int {
-  float dot_product = 0;
-
+auto Perceptron::predict(std::vector<float> inputs) -> int {
   // get a dot product between inputs and weights
-  for (int i = 0; i < p.weights.size(); ++i) {
-    dot_product += inputs[i] * p.weights[i];
+  float dot_product = 0;
+  for (int i = 0; i < weights.size(); ++i) {
+    dot_product += inputs[i] * weights[i];
   }
-  dot_product += p.bias;
+  dot_product += bias;
 
   // pass the result to the activation function (feed forward)
+  // activation function determines the output of this preceptron
   return step(dot_product);
 }
 
-// activation function determines the output of this preceptron
+// conveniant way of calling predict method
+template<typename... T>
+auto Perceptron::operator()(T... inputs) -> int {
+  auto args = std::initializer_list{inputs...};
+  std::vector<float> inputs_f;
+  std::copy(args.begin(), args.end(), back_inserter(inputs_f));
+  return predict(inputs_f);
+}
+
 static auto step(float sum) -> int {
   // https://en.wikipedia.org/wiki/Heaviside_step_function
   int output = sum > 0 ? 1 : 0; // -> 0 or 1

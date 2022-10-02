@@ -11,14 +11,14 @@ static auto perceptron_train_and_gate(float learning_rate) -> Perceptron {
   while (true) {
     int a = random_int(0, 1);
     int b = random_int(0, 1);
-    train(p, {float(a), float(b)}, a && b);
+    p.train({float(a), float(b)}, a && b);
 
     // check training result
     if (
-      predict(p, {0, 0}) == 0 &&
-      predict(p, {1, 0}) == 0 &&
-      predict(p, {0, 1}) == 0 &&
-      predict(p, {1, 1}) == 1
+      p.predict({0, 0}) == 0 &&
+      p.predict({1, 0}) == 0 &&
+      p.predict({0, 1}) == 0 &&
+      p.predict({1, 1}) == 1
     ) {
       break;
     }
@@ -34,14 +34,14 @@ static auto perceptron_train_or_gate(float learning_rate) -> Perceptron {
   while (true) {
     int a = random_int(0, 1);
     int b = random_int(0, 1);
-    train(p, {float(a), float(b)}, a || b);
+    p.train({float(a), float(b)}, a || b);
 
     // check training result
     if (
-      predict(p, {0, 0}) == 0 &&
-      predict(p, {1, 0}) == 1 &&
-      predict(p, {0, 1}) == 1 &&
-      predict(p, {1, 1}) == 1
+      p.predict({0, 0}) == 0 &&
+      p.predict({1, 0}) == 1 &&
+      p.predict({0, 1}) == 1 &&
+      p.predict({1, 1}) == 1
     ) {
       break;
     }
@@ -56,12 +56,12 @@ static auto perceptron_train_not_gate(float learning_rate) -> Perceptron {
 
   while (true) {
     int a = random_int(0, 1);
-    train(p, {float(a)}, !a);
+    p.train({float(a)}, !a);
 
     // check training result
     if (
-      predict(p, {0}) == 1 &&
-      predict(p, {1}) == 0
+      p.predict({0}) == 1 &&
+      p.predict({1}) == 0
     ) {
       break;
     }
