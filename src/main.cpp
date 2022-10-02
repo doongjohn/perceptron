@@ -14,7 +14,6 @@ auto main() -> int {
   Perceptron p_not = perceptron_train_not_gate(0.1f);
 
   const auto xor_func = [&](int a, int b) -> int {
-    // xor(a, b) = and(not(and(a, b)), or(a, b))
     return p_and(p_not(p_and(a, b)), p_or(a, b));
   };
 
