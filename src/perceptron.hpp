@@ -21,7 +21,7 @@ struct Perceptron {
   auto operator()(T... inputs) -> int;
 };
 
-Perceptron::Perceptron(int input_size) {
+inline Perceptron::Perceptron(int input_size) {
   // initialize the weights and bias randomly
   new (&weights) std::vector<float>(input_size);
   for (auto &w : weights) {
@@ -30,7 +30,7 @@ Perceptron::Perceptron(int input_size) {
   bias = random_float(-0.5f, 0.5f);
 }
 
-auto Perceptron::train(std::vector<float> inputs, int target) -> void {
+inline auto Perceptron::train(std::vector<float> inputs, int target) -> void {
   // supervised learning
   int error = target - predict(inputs);
   if (error != 0) {
@@ -42,7 +42,7 @@ auto Perceptron::train(std::vector<float> inputs, int target) -> void {
   }
 }
 
-auto Perceptron::predict(std::vector<float> inputs) -> int {
+inline auto Perceptron::predict(std::vector<float> inputs) -> int {
   // get a dot product between inputs and weights
   float dot_product = 0;
   for (int i = 0; i < weights.size(); ++i) {
