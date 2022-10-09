@@ -8,8 +8,6 @@
 #include "perceptron.hpp"
 #include "training.hpp"
 
-// TODO: make multi-layer perceptron
-
 auto main() -> int {
   Perceptron p_and = perceptron_train_and_gate(0.1f);
   Perceptron p_or = perceptron_train_or_gate(0.1f);
